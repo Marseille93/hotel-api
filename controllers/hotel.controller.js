@@ -4,9 +4,8 @@ exports.createHotel = async (req, res) => {
 	try {
 		const hotelData = req.body;
 
-		// Ajouter la photo si elle existe
-		if (req.file) {
-			hotelData.photo = req.file.path;
+		if (req.file && req.file.path) {
+			hotelData.photo = req.file.path; // L’URL Cloudinary directe
 		}
 
 		const newHotel = new Hotel(hotelData);
@@ -14,11 +13,7 @@ exports.createHotel = async (req, res) => {
 
 		res.status(201).json(newHotel);
 	} catch (error) {
-		console.error("Erreur création hôtel:", error);
-		res.status(400).json({
-			message: "Erreur de création",
-			error: error.message || error,
-		});
+		res.status(400).json({ message: "Erreur de création", error });
 	}
 };
 
